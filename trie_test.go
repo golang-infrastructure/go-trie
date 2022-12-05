@@ -16,7 +16,7 @@ func TestDefaultPathSplitFunc(t *testing.T) {
 func TestNewTrie(t *testing.T) {
 
 	// 假装是一个Web路由
-	trie := NewTrie[func() error](func(s string) ([]string, error) {
+	trie := New[func() error](func(s string) ([]string, error) {
 		slice := make([]string, 0)
 		for _, x := range strings.Split(s, "/") {
 			if x != "" {
@@ -60,7 +60,7 @@ func TestTrieNode_RemoveChild(t *testing.T) {
 }
 
 func TestTrie_Add(t *testing.T) {
-	trie := NewTrie[string]()
+	trie := New[string]()
 
 	err := trie.Add("test", "测试")
 	assert.Nil(t, err)
@@ -74,7 +74,7 @@ func TestTrie_FindTrieNode(t *testing.T) {
 }
 
 func TestTrie_Query(t *testing.T) {
-	trie := NewTrie[string]()
+	trie := New[string]()
 
 	err := trie.Add("test", "测试")
 	assert.Nil(t, err)
@@ -88,7 +88,7 @@ func TestTrie_Query(t *testing.T) {
 }
 
 func TestTrie_QueryOrDefault(t *testing.T) {
-	trie := NewTrie[string]()
+	trie := New[string]()
 
 	err := trie.Add("test", "测试")
 	assert.Nil(t, err)
@@ -104,7 +104,7 @@ func TestTrie_QueryOrDefault(t *testing.T) {
 }
 
 func TestTrie_Remove(t *testing.T) {
-	trie := NewTrie[string]()
+	trie := New[string]()
 
 	err := trie.Upsert("china", "瓷器")
 	assert.Nil(t, err)
@@ -120,7 +120,7 @@ func TestTrie_Remove(t *testing.T) {
 }
 
 func TestTrie_Upsert(t *testing.T) {
-	trie := NewTrie[string]()
+	trie := New[string]()
 
 	_ = trie.Upsert("china", "瓷器")
 	value, err := trie.Query("china")
@@ -134,7 +134,7 @@ func TestTrie_Upsert(t *testing.T) {
 }
 
 func TestTrie_ToSlice(t *testing.T) {
-	trie := NewTrie[string]()
+	trie := New[string]()
 	err := trie.Add("china", "中国")
 	assert.Nil(t, err)
 	err = trie.Add("chinese", "中国人")

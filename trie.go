@@ -31,7 +31,7 @@ type Trie[T any] struct {
 	pathSplitFunc PathSplitFunc
 }
 
-func NewTrie[T any](pathSplitFunc ...PathSplitFunc) *Trie[T] {
+func New[T any](pathSplitFunc ...PathSplitFunc) *Trie[T] {
 	return &Trie[T]{
 		pathSplitFunc: append(pathSplitFunc, DefaultPathSplitFunc)[0],
 		root:          NewTrieNode[T]("", nil),
