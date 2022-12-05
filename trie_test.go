@@ -34,12 +34,12 @@ func TestNewTrie(t *testing.T) {
 	assert.Nil(t, err)
 
 	// 尝试寻找不存在的路由
-	value, err := trie.QueryE("/foo")
+	value, err := trie.Query("/foo")
 	assert.NotNil(t, err)
 	assert.Nil(t, value)
 
 	// 尝试寻找存在的路由
-	handler, err := trie.QueryE("//foo//bar/")
+	handler, err := trie.Query("//foo//bar/")
 	assert.Nil(t, err)
 	assert.NotNil(t, handler)
 	err = handler()
@@ -60,25 +60,85 @@ func TestTrieNode_RemoveChild(t *testing.T) {
 }
 
 func TestTrie_Add(t *testing.T) {
+	trie := NewTrie[string]()
 
+	err := trie.Add("test", "测试")
+	assert.Nil(t, err)
+
+	slice := trie.ToSlice()
+	assert.Equal(t, 1, len(slice))
 }
 
 func TestTrie_FindTrieNode(t *testing.T) {
 
 }
 
-func TestTrie_QueryE(t *testing.T) {
+func TestTrie_Query(t *testing.T) {
+	trie := NewTrie[string]()
 
+	err := trie.Add("test", "测试")
+	assert.Nil(t, err)
+
+	value, err := trie.Query("test")
+	assert.Nil(t, err)
+	assert.Equal(t, "测试", value)
+
+	value, err = trie.Query("test-001")
+	assert.ErrorIs(t, ErrNotFound, err)
 }
 
-func TestTrie_QueryOrDefaultE(t *testing.T) {
+func TestTrie_QueryOrDefault(t *testing.T) {
+	trie := NewTrie[string]()
+
+	err := trie.Add("test", "测试")
+	assert.Nil(t, err)
+
+	value, err := trie.QueryOrDefault("test", "策士")
+	assert.Nil(t, err)
+	assert.Equal(t, "测试", value)
+
+	value, err = trie.QueryOrDefault("test-001", "策士")
+	assert.Nil(t, err)
+	assert.Equal(t, "策士", value)
 
 }
 
 func TestTrie_Remove(t *testing.T) {
+	trie := NewTrie[string]()
 
+	err := trie.Upsert("china", "瓷器")
+	assert.Nil(t, err)
+	err = trie.Upsert("chinese", "中国人")
+	assert.Nil(t, err)
+	slice := trie.ToSlice()
+	assert.Equal(t, 2, len(slice))
+
+	err = trie.Remove("china")
+	assert.Nil(t, err)
+	slice = trie.ToSlice()
+	assert.Equal(t, 1, len(slice))
 }
 
 func TestTrie_Upsert(t *testing.T) {
+	trie := NewTrie[string]()
 
+	_ = trie.Upsert("china", "瓷器")
+	value, err := trie.Query("china")
+	assert.Nil(t, err)
+	assert.Equal(t, "瓷器", value)
+
+	_ = trie.Upsert("china", "中国")
+	value, err = trie.Query("china")
+	assert.Nil(t, err)
+	assert.Equal(t, "中国", value)
+}
+
+func TestTrie_ToSlice(t *testing.T) {
+	trie := NewTrie[string]()
+	err := trie.Add("china", "中国")
+	assert.Nil(t, err)
+	err = trie.Add("chinese", "中国人")
+	assert.Nil(t, err)
+	slice := trie.ToSlice("")
+	assert.Equal(t, 2, len(slice))
 }

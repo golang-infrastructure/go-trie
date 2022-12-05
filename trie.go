@@ -1,6 +1,10 @@
 package trie
 
-import "errors"
+import (
+	"errors"
+	"github.com/golang-infrastructure/go-stack"
+	"github.com/golang-infrastructure/go-tuple"
+)
 
 // ------------------------------------------------- PathSplitFunc -----------------------------------------------------
 
@@ -92,19 +96,18 @@ func (x *Trie[T]) Remove(path string) error {
 	return nil
 }
 
-// QueryE 查询路径的值
-func (x *Trie[T]) QueryE(path string) (value T, err error) {
+// Query 查询路径的值
+func (x *Trie[T]) Query(path string) (value T, err error) {
 	_, node, err := x.FindTrieNode(path)
 	if err == nil {
 		return node.Value, nil
-	} else {
-		var zero T
-		return zero, err
 	}
+	var zero T
+	return zero, err
 }
 
-// QueryOrDefaultE 查询给定的路径的负载，如果不存在的话则返回默认值
-func (x *Trie[T]) QueryOrDefaultE(path string, defaultValue T) (value T, err error) {
+// QueryOrDefault 查询给定的路径的负载，如果不存在的话则返回默认值
+func (x *Trie[T]) QueryOrDefault(path string, defaultValue T) (value T, err error) {
 	_, node, err := x.FindTrieNode(path)
 	if err == nil {
 		return node.Value, nil
@@ -139,6 +142,27 @@ func (x *Trie[T]) FindTrieNode(path string) ([]string, *TrieNode[T], error) {
 	return pathSlice, currentNode, nil
 }
 
+// ToSlice 把字典树转为字典列表
+func (x *Trie[T]) ToSlice(delimiter ...string) []*tuple.Tuple2[string, T] {
+	delimiter = append(delimiter, "")
+	stack := stack.NewArrayStack[*tuple.Tuple2[string, *TrieNode[T]]]()
+	stack.Push(tuple.New2("", x.root))
+	slice := make([]*tuple.Tuple2[string, T], 0)
+	for stack.IsNotEmpty() {
+		t2 := stack.Pop()
+		fullPath := t2.V1 + delimiter[0] + t2.V2.Key
+		if t2.V2.Exists {
+			slice = append(slice, tuple.New2(fullPath, t2.V2.Value))
+		}
+		if len(t2.V2.Children) != 0 {
+			for _, childNode := range t2.V2.Children {
+				stack.Push(tuple.New2(fullPath, childNode))
+			}
+		}
+	}
+	return slice
+}
+
 // ------------------------------------------------- TrieNode ----------------------------------------------------------
 
 type TrieNode[T any] struct {
@@ -154,7 +178,7 @@ func NewTrieNode[T any](key string, parent *TrieNode[T]) *TrieNode[T] {
 	return &TrieNode[T]{
 		Parent:   parent,
 		Children: make(map[string]*TrieNode[T], 0),
-		Exists:   true,
+		Exists:   false,
 
 		Key: key,
 	}
