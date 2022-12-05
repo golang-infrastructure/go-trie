@@ -157,3 +157,17 @@ func TestTrie_FindByPrefix(t *testing.T) {
 	assert.Equal(t, 2, len(slice))
 
 }
+
+func TestTrie_Contains(t *testing.T) {
+	trie := New[string]()
+	_ = trie.Upsert("china", "china")
+	_ = trie.Upsert("chinese", "chinese")
+
+	exists, err := trie.Contains("china")
+	assert.Nil(t, err)
+	assert.True(t, exists)
+
+	exists, err = trie.Contains("chi")
+	assert.Nil(t, err)
+	assert.False(t, exists)
+}

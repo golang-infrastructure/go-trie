@@ -187,10 +187,17 @@ func (x *Trie[T]) ToSlice(delimiter ...string) []*tuple.Tuple2[string, T]
 func (x *Trie[T]) QueryByPrefix(prefix string, delimiter ...string) []*tuple.Tuple2[string, T]
 ```
 
+## Contains
+
+查询给定的单词是否在树上 
+
+```go
+func (x *Trie[T]) Contains(path string) (bool, error)
+```
 
 # TODO 
-- 加入导出dot language的支持以方便可视化观察字典树
 
+- 加入导出dot language的支持以方便可视化观察字典树
 
 
 

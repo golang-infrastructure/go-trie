@@ -195,6 +195,19 @@ func (x *Trie[T]) QueryByPrefix(prefix string, delimiter ...string) []*tuple.Tup
 	return slice
 }
 
+func (x *Trie[T]) Contains(path string) (bool, error) {
+	_, node, err := x.FindTrieNode(path)
+	if err != nil {
+		if errors.Is(err, ErrNotFound) {
+			return false, nil
+		} else {
+			return false, err
+		}
+	} else {
+		return node != nil && node.Exists, nil
+	}
+}
+
 // ------------------------------------------------- TrieNode ----------------------------------------------------------
 
 type TrieNode[T any] struct {
