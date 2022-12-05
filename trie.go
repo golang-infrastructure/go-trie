@@ -6,6 +6,10 @@ import (
 	"github.com/golang-infrastructure/go-tuple"
 )
 
+// ------------------------------------------------ ---------------------------------------------------------------------
+
+const DefaultDelimiter = ""
+
 // ------------------------------------------------- PathSplitFunc -----------------------------------------------------
 
 // PathSplitFunc 用于把传入的路径字符串切割为字典中的一个项，默认是按照字符来切割，使用者可根据自己的需求自定义切割方式
@@ -144,9 +148,37 @@ func (x *Trie[T]) FindTrieNode(path string) ([]string, *TrieNode[T], error) {
 
 // ToSlice 把字典树转为字典列表
 func (x *Trie[T]) ToSlice(delimiter ...string) []*tuple.Tuple2[string, T] {
-	delimiter = append(delimiter, "")
+	delimiter = append(delimiter, DefaultDelimiter)
 	stack := stack.NewArrayStack[*tuple.Tuple2[string, *TrieNode[T]]]()
 	stack.Push(tuple.New2("", x.root))
+	slice := make([]*tuple.Tuple2[string, T], 0)
+	for stack.IsNotEmpty() {
+		t2 := stack.Pop()
+		fullPath := t2.V1 + delimiter[0] + t2.V2.Key
+		if t2.V2.Exists {
+			slice = append(slice, tuple.New2(fullPath, t2.V2.Value))
+		}
+		if len(t2.V2.Children) != 0 {
+			for _, childNode := range t2.V2.Children {
+				stack.Push(tuple.New2(fullPath, childNode))
+			}
+		}
+	}
+	return slice
+}
+
+// QueryByPrefix 根据前缀查询
+func (x *Trie[T]) QueryByPrefix(prefix string, delimiter ...string) []*tuple.Tuple2[string, T] {
+	_, node, err := x.FindTrieNode(prefix)
+	if err != nil {
+		return nil
+	}
+	if len(delimiter) == 0 {
+		delimiter = append(delimiter, DefaultDelimiter)
+	}
+	stack := stack.NewArrayStack[*tuple.Tuple2[string, *TrieNode[T]]]()
+	stack.Push(tuple.New2(node.Parent.BuildFullPath(delimiter...), node))
+	// 然后开始收集整个子树上的单词
 	slice := make([]*tuple.Tuple2[string, T], 0)
 	for stack.IsNotEmpty() {
 		t2 := stack.Pop()
@@ -200,6 +232,17 @@ func (x *TrieNode[T]) Remove() {
 	var zero T
 	x.Value = zero
 	x.Exists = false
+}
+
+func (x *TrieNode[T]) BuildFullPath(delimiter ...string) string {
+	if len(delimiter) == 0 {
+		delimiter = append(delimiter, "")
+	}
+	var parentFullPath string
+	if x.Parent != nil {
+		parentFullPath = x.Parent.BuildFullPath(delimiter...)
+	}
+	return parentFullPath + delimiter[0] + x.Key
 }
 
 // ------------------------------------------------- --------------------------------------------------------------------

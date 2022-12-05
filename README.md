@@ -179,6 +179,14 @@ func (x *Trie[T]) FindTrieNode(path string) ([]string, *TrieNode[T], error)
 func (x *Trie[T]) ToSlice(delimiter ...string) []*tuple.Tuple2[string, T] 
 ```
 
+## QueryByPrefix
+
+根据前缀查询单词
+
+```go
+func (x *Trie[T]) QueryByPrefix(prefix string, delimiter ...string) []*tuple.Tuple2[string, T]
+```
+
 
 
 

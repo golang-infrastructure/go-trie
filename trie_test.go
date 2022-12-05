@@ -142,3 +142,18 @@ func TestTrie_ToSlice(t *testing.T) {
 	slice := trie.ToSlice("")
 	assert.Equal(t, 2, len(slice))
 }
+
+func TestTrie_FindByPrefix(t *testing.T) {
+	trie := New[string]()
+	_ = trie.Upsert("china", "china")
+	_ = trie.Upsert("chinese", "chinese")
+	_ = trie.Upsert("channel", "channel")
+	_ = trie.Upsert("chan", "chan")
+	_ = trie.Upsert("boy", "boy")
+	_ = trie.Upsert("CC11001100", "CC11001100")
+
+	slice := trie.QueryByPrefix("chan")
+	//t.Log(slice)
+	assert.Equal(t, 2, len(slice))
+
+}
