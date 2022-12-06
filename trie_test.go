@@ -150,7 +150,7 @@ func TestTrie_FindByPrefix(t *testing.T) {
 	_ = trie.Upsert("channel", "channel")
 	_ = trie.Upsert("chan", "chan")
 	_ = trie.Upsert("boy", "boy")
-	_ = trie.Upsert("CC11001100", "CC11001100")
+	_ = trie.Upsert("cc11001100", "CC11001100")
 
 	slice := trie.QueryByPrefix("chan")
 	//t.Log(slice)
@@ -162,12 +162,37 @@ func TestTrie_Contains(t *testing.T) {
 	trie := New[string]()
 	_ = trie.Upsert("china", "china")
 	_ = trie.Upsert("chinese", "chinese")
+	_ = trie.Upsert("channel", "channel")
+	_ = trie.Upsert("chan", "chan")
+	_ = trie.Upsert("boy", "boy")
+	_ = trie.Upsert("cc11001100", "CC11001100")
 
-	exists, err := trie.Contains("china")
-	assert.Nil(t, err)
-	assert.True(t, exists)
-
-	exists, err = trie.Contains("chi")
-	assert.Nil(t, err)
-	assert.False(t, exists)
+	//t.Log(trie.ExportToDotLanguage())
+	// digraph G1 {
+	//            "0::" -> "1:c:";
+	//            "0::" -> "2:b:";
+	//            "1:c:" -> "3:h:";
+	//            "1:c:" -> "4:c:";
+	//            "2:b:" -> "5:o:";
+	//            "3:h:" -> "6:i:";
+	//            "3:h:" -> "7:a:";
+	//            "4:c:" -> "8:1:";
+	//            "5:o:" -> "9:y:boy";
+	//            "6:i:" -> "10:n:";
+	//            "7:a:" -> "11:n:chan";
+	//            "8:1:" -> "12:1:";
+	//            "10:n:" -> "13:a:china";
+	//            "10:n:" -> "14:e:";
+	//            "11:n:chan" -> "15:n:";
+	//            "12:1:" -> "16:0:";
+	//            "14:e:" -> "17:s:";
+	//            "15:n:" -> "18:e:";
+	//            "16:0:" -> "19:0:";
+	//            "17:s:" -> "20:e:chinese";
+	//            "18:e:" -> "21:l:channel";
+	//            "19:0:" -> "22:1:";
+	//            "22:1:" -> "23:1:";
+	//            "23:1:" -> "24:0:";
+	//            "24:0:" -> "25:0:CC11001100";
+	//        }
 }

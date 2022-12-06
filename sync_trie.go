@@ -87,3 +87,10 @@ func (x *SyncTrie[T]) Contains(path string) (bool, error) {
 
 	return x.trie.Contains(path)
 }
+
+func (x *SyncTrie[T]) ExportToDotLanguage() string {
+	x.lock.RLock()
+	defer x.lock.RUnlock()
+
+	return x.trie.ExportToDotLanguage()
+}

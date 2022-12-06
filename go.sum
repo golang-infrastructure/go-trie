@@ -1,12 +1,16 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/golang-infrastructure/go-heap v0.0.2 h1:o3u5Wr8W/MO2PjtczBOEwb7HdUgK5zV12aAdp7T28IA=
+github.com/golang-infrastructure/go-heap v0.0.2/go.mod h1:crBY8pM89fprjRYrEGalpJ7xEzhD+XtxiFAuF9JnCuM=
 github.com/golang-infrastructure/go-if-expression v0.0.2 h1:7xS0/6jNsWSz++xIhxc/gfAfCoDAeBzwxCBhDjQwMRI=
 github.com/golang-infrastructure/go-if-expression v0.0.2/go.mod h1:U4ZtU29/RtZ/cM0tAdBzFaFxENFShSFj+jCRFRE/cv4=
 github.com/golang-infrastructure/go-if-expression v0.0.3-0.20221124070017-226ba337db7e h1:4yU+QAH4dGtcEKyes++e8NG4dtDRUOPMsLYZ1XDzBMQ=
 github.com/golang-infrastructure/go-if-expression v0.0.3-0.20221124070017-226ba337db7e/go.mod h1:U4ZtU29/RtZ/cM0tAdBzFaFxENFShSFj+jCRFRE/cv4=
 github.com/golang-infrastructure/go-if-expression v0.0.3-0.20221205164245-e3b4693b143e h1:5WPpw5hUMrKTCQ6O3fGBsyVgohxTRpOVvCwkn/e4IEI=
 github.com/golang-infrastructure/go-if-expression v0.0.3-0.20221205164245-e3b4693b143e/go.mod h1:U4ZtU29/RtZ/cM0tAdBzFaFxENFShSFj+jCRFRE/cv4=
+github.com/golang-infrastructure/go-queue v0.0.0-20221128180429-701892f44bcc h1:+i4Y16ygfCIRKnEfwSd7cfQ+KvSMx/ALePIf8wTFRuc=
+github.com/golang-infrastructure/go-queue v0.0.0-20221128180429-701892f44bcc/go.mod h1:Ype8CrMpjePHOJq+wRoIN3hx10H/WQsZ5SNvHdiSsBQ=
 github.com/golang-infrastructure/go-reflect-utils v0.0.0-20221130143747-965ef2eb09c3 h1:jJ7AdpNdLQudsx1hiXY9iwmauHARV4/UB52KnBh9Se0=
 github.com/golang-infrastructure/go-reflect-utils v0.0.0-20221130143747-965ef2eb09c3/go.mod h1:zqXYxqOBa1mL2ilBK6PuH/Wb/Iego7en6XhiKWdZQHI=
 github.com/golang-infrastructure/go-stack v0.0.2 h1:1F+F4/s2YlAW9NI8zc4jl90WrqLlXsWfCstBRpPvVl4=

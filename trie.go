@@ -2,8 +2,11 @@ package trie
 
 import (
 	"errors"
+	"fmt"
+	"github.com/golang-infrastructure/go-queue"
 	"github.com/golang-infrastructure/go-stack"
 	"github.com/golang-infrastructure/go-tuple"
+	"strings"
 )
 
 // ------------------------------------------------ ---------------------------------------------------------------------
@@ -206,6 +209,38 @@ func (x *Trie[T]) Contains(path string) (bool, error) {
 	} else {
 		return node != nil && node.Exists, nil
 	}
+}
+
+func (x *Trie[T]) ExportToDotLanguage() string {
+	// digraph G1 {
+	//    a -- b;
+	//    a -- d;
+	//    b -- c;
+	//    d -- c;
+	//}
+	sb := strings.Builder{}
+	sb.WriteString("digraph G1 { \n")
+
+	// 如果只有一个节点的话，则认为是空
+	if x.root == nil || len(x.root.Children) == 0 {
+		sb.WriteString("}")
+		return sb.String()
+	}
+
+	// 说明节点还不少，则开始尝试画图，这里借助一个队列进行程序遍历
+	id := 0
+	queue := queue.NewLinkedQueue[*tuple.Tuple2[int, *TrieNode[T]]]()
+	_ = queue.Put(tuple.New2(id, x.root))
+	for queue.IsNotEmpty() {
+		t := queue.Take()
+		for _, childNode := range t.V2.Children {
+			id++
+			_ = queue.Put(tuple.New2(id, childNode))
+			sb.WriteString(fmt.Sprintf("    \"%d:%s:%v\" -> \"%d:%s:%v\"; \n", t.V1, t.V2.Key, t.V2.Value, id, childNode.Key, childNode.Value))
+		}
+	}
+	sb.WriteString("}")
+	return sb.String()
 }
 
 // ------------------------------------------------- TrieNode ----------------------------------------------------------

@@ -10,6 +10,10 @@ go get -u github.com/golang-infrastructure/go-trie
 
 # 二、示例代码
 
+前缀字典树：
+
+![graphviz](README.assets/graphviz.png)
+
 ## 2.1 基本单词查询
 
 ```go
@@ -195,9 +199,17 @@ func (x *Trie[T]) QueryByPrefix(prefix string, delimiter ...string) []*tuple.Tup
 func (x *Trie[T]) Contains(path string) (bool, error)
 ```
 
+## ExportToDotLanguage
+
+把字典树导出为dot language方便可视化观察
+
+```go
+func (x *Trie[T]) ExportToDotLanguage() string 
+```
+
 # TODO 
 
-- 加入导出dot language的支持以方便可视化观察字典树
+- 增加SyncTrie的文档及示例说明 
 
 
 
