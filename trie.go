@@ -42,6 +42,11 @@ func New[T any](pathSplitFunc ...PathSplitFunc) *Trie[T] {
 	}
 }
 
+// RootTrieNode 返回字典树的根节点
+func (x *Trie[T]) RootTrieNode() *TrieNode[T] {
+	return x.root
+}
+
 // Add 仅当不存在时插入到树上，已经存在的话则忽略
 func (x *Trie[T]) Add(path string, value T) error {
 	// 先把路径切割
