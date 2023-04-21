@@ -3,10 +3,11 @@ package trie
 import (
 	"errors"
 	"fmt"
+	"strings"
+
 	"github.com/golang-infrastructure/go-queue"
 	"github.com/golang-infrastructure/go-stack"
 	"github.com/golang-infrastructure/go-tuple"
-	"strings"
 )
 
 // ------------------------------------------------ ---------------------------------------------------------------------
@@ -133,7 +134,8 @@ func (x *Trie[T]) QueryOrDefault(path string, defaultValue T) (value T, err erro
 }
 
 // FindTrieNode 寻找路径绑定的节点
-func (x *Trie[T]) FindTrieNode(path string) ([]string, *TrieNode[T], error) {
+func (x *Trie[T]) FindTrieNode(path string, mustExists ...bool) ([]string, *TrieNode[T], error) {
+	mustExists = append(mustExists, true)
 	// 先把路径切割
 	pathSlice, err := x.pathSplitFunc(path)
 	if err != nil {
@@ -148,7 +150,7 @@ func (x *Trie[T]) FindTrieNode(path string) ([]string, *TrieNode[T], error) {
 		}
 		currentNode = node
 	}
-	if currentNode == nil || !currentNode.Exists {
+	if currentNode == nil || (mustExists[0] && !currentNode.Exists) {
 		return nil, nil, ErrNotFound
 	}
 	return pathSlice, currentNode, nil
@@ -177,7 +179,7 @@ func (x *Trie[T]) ToSlice(delimiter ...string) []*tuple.Tuple2[string, T] {
 
 // QueryByPrefix 根据前缀查询
 func (x *Trie[T]) QueryByPrefix(prefix string, delimiter ...string) []*tuple.Tuple2[string, T] {
-	_, node, err := x.FindTrieNode(prefix)
+	_, node, err := x.FindTrieNode(prefix, false)
 	if err != nil {
 		return nil
 	}
