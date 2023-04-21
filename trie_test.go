@@ -2,9 +2,10 @@ package trie
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDefaultPathSplitFunc(t *testing.T) {
@@ -152,10 +153,9 @@ func TestTrie_FindByPrefix(t *testing.T) {
 	_ = trie.Upsert("boy", "boy")
 	_ = trie.Upsert("cc11001100", "CC11001100")
 
-	slice := trie.QueryByPrefix("chan")
+	slice := trie.QueryByPrefix("c")
 	//t.Log(slice)
-	assert.Equal(t, 2, len(slice))
-
+	assert.Equal(t, 5, len(slice))
 }
 
 func TestTrie_Contains(t *testing.T) {
